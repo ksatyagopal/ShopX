@@ -1,0 +1,119 @@
+<div class="jumbotron" style="background-color:cornflowerblue;">
+  <div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <div>
+        <div style="margin-top: 150px; margin-left: 10px;" class="text-center">
+          <img src="https://i.pinimg.com/originals/6c/9e/19/6c9e197129299c5af04d8ad1173ad9b9.gif" width="150px" style="border-radius:15px">
+          <h3 class="text-white">Welcome</h3>
+          <p class="white-text">You are 30 seconds away from compleating your order!</p>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-white btn-rounded back-button" routerLink="/Cart">Go back</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div style="background-color:aliceblue;border-radius: 55px 1px 55px;">
+        <form #addressform="ngForm" class="mb-0" style="margin :25px">
+            <fieldset>
+        
+              <br>
+              <label class="form-label" for="form9Example1">Address</label>
+                    
+                    <input type="text" id="address" [(ngModel)]="myaddress.addressLine1" [ngModelOptions]="{standalone:true}" #address="ngModel" name="addressLine1"id="addressLine1" class="form-control input-custom" required/>
+                    <span *ngIf="address.touched && address.invalid" class="text-danger">
+                      Address is required
+                    </span>
+                    <br>
+                    <label class="form-label" for="form9Example2">AddressLine-2</label>
+                   
+                    <input type="text" id="address2" [(ngModel)]="myaddress.addressLine2" [ngModelOptions]="{standalone:true}" #address2="ngModel" name="addressLine2" id="addressLine2" class="form-control input-custom" />
+                    <span *ngIf="address2.touched && address2.invalid" class="text-danger">
+                      Address2 is required
+                    </span>
+                    <br>
+                    <label class="form-label"  for="form9Example3">City</label>
+                    
+                    <input type="text" id="City" [(ngModel)]="myaddress.city" [ngModelOptions]="{standalone:true}" #City="ngModel" name="city" id="city" class="form-control input-custom" required/>
+                    <span *ngIf="City.touched && City.invalid" class="text-danger">
+                      City  is required
+                    </span>
+                    <br>
+
+                    <label class="form-label" for="form9Example4">Zip</label>
+                    <input type="text" id="Zip" [(ngModel)]="myaddress.postalCode" [ngModelOptions]="{standalone:true}" #Zip="ngModel" name="postalCode" class="form-control input-custom" minlength="6" maxlength="6" required/>
+                    <span *ngIf="Zip.touched && Zip.invalid" class="text-danger">
+                       Invalid Postal Code is required
+                    </span>
+                    <br>
+                    
+                    <label class="form-label" for="form9Example6">Country</label>
+                    <input type="text" id="country" [(ngModel)]="myaddress.country" [ngModelOptions]="{standalone:true}" #country="ngModel" name="country"class="form-control input-custom" required/>
+                    <span *ngIf="country.touched && country.invalid" class="text-danger">
+                      Country is required
+                    </span>
+                    <br>
+                    
+                    <label class="form-label" for="mobile">Phone</label>
+                    <input type="text" id="phno" [(ngModel)]="myaddress.mobile" [ngModelOptions]="{standalone:true}" #phno="ngModel" name="mobile" id="mobile" class="form-control input-custom" minlength="10" maxlength="10" required/>
+                    <span *ngIf="phno.touched && phno.invalid" class="text-danger">
+                      Mobile number must be 10 digits
+                    </span>
+                    <br>
+
+                    <label class="form-label" for="contactPerson">Deliver TO</label>
+                  
+                    <input type="text" id="name" [(ngModel)]="myaddress.contactPerson" [ngModelOptions]="{standalone:true}" #name="ngModel" name="contactPerson" id="contactPerson" class="form-control input-custom" required/>
+                  <span *ngIf="name.touched && name.invalid" class="text-danger">
+                      Person Name is required
+                    </span>
+                    <br>
+
+                    <label class="form-label" for="mailId">Email</label>
+                 
+                    <input type="email" id="mail" [(ngModel)]="myaddress.mailId" [ngModelOptions]="{standalone:true}" #mail="ngModel" name="mailId"id="mailId" class="form-control input-custom"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+                   <span *ngIf="mail.touched && mail.invalid" class="text-danger">
+                      Please enter valid mail id
+                    </span>
+                    <br>
+
+              <h3>Payment Mode</h3>
+              
+              <h4>
+               COD
+              </h4>
+                <hr>
+              <div class="float-end ">
+                <!-- Submit button -->
+                <button  class="btn btn-primary btn-rounded" 
+                
+        
+                  style="background-color:#0062CC; margin-right: 20px; margin-bottom: 10px;" (click)="goToOrders()"  (click)="openModal()" data-toggle="modal" data-target="#exampleModalCenter" [disabled]="address.invalid || mail.invalid ||City.invalid ||country.invalid ||Zip.invalid || phno.invalid || name.invalid ">Confirm</button>
+              </div>
+              <br>
+            </fieldset>
+        
+            </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}" style="background-color:rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          
+            <div class="modal-body">
+              Thank You for your Order!!!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="onCloseHandled()" >Continue</button>
+              
+            </div>
+     </div>
+      </div>
+</div>
+

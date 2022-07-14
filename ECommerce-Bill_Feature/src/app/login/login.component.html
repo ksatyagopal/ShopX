@@ -1,0 +1,132 @@
+
+ 
+
+
+<div class="m-4">
+  <div class="">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-md-8 col-lg-6 col-xl-5" >
+        <img src="../assets/loginlogo.svg" alt="">
+      </div>
+        
+      
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        
+        <b style="color:blueviolet;font-size:50px;font-family: 'Montez'">Login</b>
+        
+        <form #loginForm="ngForm">
+          <!-- Email input -->
+          <div class="form-outline mb-4" style="padding-top:30px">
+            
+            <label class="form-label" for="mail">Email address</label>
+            <input type="email" id="mail" [(ngModel)]="mailid" [ngModelOptions]="{standalone: true}" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
+            #mail="ngModel"  class="form-control form-control-lg" placeholder="Enter email address" required/>
+            <span class="text-danger small" *ngIf="mail.errors?.['pattern']">Invalid email.</span>
+            <span class="text-danger small" *ngIf="mail.touched && !mail.errors?.['pattern'] && mail.invalid">Email is required.</span>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <label class="form-label" for="pwd">Password</label>
+            <input type="password" id="pwd" #pwd="ngModel" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control form-control-lg" placeholder="Enter password" required/>
+            <span class="text-danger small" *ngIf="pwd.touched && pwd.invalid">Password is required.</span>
+          </div>
+
+          <div class="d-flex justify-content-end align-items-center">
+            <a style="color: blueviolet;" (click)="showForgotPasswordPage()">Forgot password?</a>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-lg text-white" [disabled]="mail.invalid || pwd.invalid"
+              style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: blueviolet;" (click)="validateUser()">Sign in</button>
+           
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-light">
+    <!-- Copyright -->
+    <div class="mb-3 mb-md-0" style="color:blueviolet;">
+      Copyright © 2022. All rights reserved.
+    </div>
+    <!-- Copyright -->
+
+    <!-- Right -->
+    <div>
+      <p style="color: blueviolet;">
+        <i class="bi bi-envelope-fill"></i> ShopX.IndiaPvtLtd@gmail.com
+      </p>
+    </div>
+    <!-- Right -->
+  </div>
+</div>
+
+
+<div class="border border-dark bg-light" style="position:fixed;left:40%;top:45%;z-index:1;" *ngIf="show==true">
+  <div class="toast-header" style="color: blueviolet;">
+    <i class="bi bi-bell"></i>
+    <strong class="me-auto"> Message </strong>
+    <button type="button" class="btn-close" (click)="closeToast()"></button>
+  </div>
+  <div class="toast-body">
+    <p class="text-danger" *ngIf="loginResponse=='serverdown'">Server is facing some issues. Unable to reach.</p>
+    <p class="text-danger" *ngIf="loginResponse=='invalid'">Wrong MailId or Password.</p>
+    <p class="text-danger" *ngIf="loginResponse=='nouser'">Wrong MailId or Password.</p>
+    <p class="text-warning" *ngIf="loginResponse=='loggedin'">Already logged in another browser.</p>
+    <p class="text-info" *ngIf="loginResponse=='deleted'">You are no longer a user. For more info contact administrator.</p>
+  </div>
+</div>
+
+
+<div class="border border-dark bg-light opacity-75" style="position:fixed;left:0%;top:0%;height: 100%;width: 100%;" *ngIf="forgotpassword || readotp || changepassword">
+</div>
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:35%;z-index:1" *ngIf="forgotpassword">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Forgot Password </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+          <form >
+            Enter Mail ID:
+            <input type="email" #fm="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$" [(ngModel)]="fmailid" [ngModelOptions]="{standalone:true}" required><br>
+            <span class="text-danger" *ngIf="fm.errors?.['pattern'] || (fm.touched && fm.invalid)">Enter a valid MailId</span>
+            <br>
+            <button class="btn" style="background-color: blueviolet;color:white;" [disabled]="fm.invalid" (click)="sendotp()">Send OTP</button>
+          </form>
+        </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:35%;z-index:1" *ngIf="readotp">
+  <div class="toast-header opacity-100" style="color: blueviolet;">
+      <strong class="me-auto"> Check Your Mail Inbox for OTP </strong>
+      <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+      <div class="toast-body">
+        <form >
+          Enter OTP:
+          <input type="text" #p="ngModel" [(ngModel)]="otpEntered" [ngModelOptions]="{standalone:true}" required><br>
+          <span class="text-danger" *ngIf="p.touched && p.invalid">Enter a valid MailId</span>
+          <br>
+          <button style="background-color: blueviolet;color:white;" [disabled]="p.invalid" (click)="validateotp()">Verify OTP</button>
+        </form>
+      </div>
+</div>
+
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:35%;z-index:1" *ngIf="changepassword">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Change Your Password </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+          <form>
+            New Password: <input type="text" #p1="ngModel" [(ngModel)]="fpassword" [ngModelOptions]="{standalone:true}" required>
+            <br>
+            <button class="btn" style="background-color: blueviolet;color:white;" [disabled]="p1.invalid" (click)="chPassword()">Change Password</button>
+          </form>
+        </div>
+</div>

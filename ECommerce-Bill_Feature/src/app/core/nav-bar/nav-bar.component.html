@@ -1,0 +1,35 @@
+<header
+    class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-2 bg-white border-bottom shadow-sm fixed-top">
+    <img src="../assets/logo.png" style="max-height: 70px;" alt="logo">
+    <nav class="my-2 my-md-0 me-md-3 text-uppercase" style="font-size: larger;">
+        <a class="p-2 text-dark" routerLink="/main">Home</a>
+        <a class="p-2 text-dark" routerLink="/Home">Shop</a>
+        <a class="p-2 text-dark" href="#">Contact</a>
+        <a class="p-2 text-dark" routerLink="/orders"  *ngIf="!loggedInUser">My Orders</a>
+        
+    </nav>
+    <div class="d-flex align-items-center">
+        <a class="position-relative">
+            <i class="fa fa-shopping-cart fa-2x mr-5 " style="color:blueviolet;" routerLink="/Cart"></i>
+            <!-- <div class="cart-no">{{basket$}}</div> -->
+        </a>
+        <a class="btn btn-outline-secondary mr-2"  *ngIf="!loggedInUser">Hello {{currentUser}} 😊</a>
+        <a class="btn btn-outline-secondary mr-2" (click)="logout()" *ngIf="!loggedInUser">Logout</a>
+        <a class="btn btn-outline-secondary mr-2" routerLink="/login" *ngIf="loggedInUser">Login</a>
+        
+        <a class="btn btn-outline-secondary mr-3" routerLink="/register" *ngIf="loggedInUser">Register</a>
+    </div>
+</header> 
+
+
+<div class="border border-dark" style="position:fixed;left:40%;top:45%;z-index:1;" *ngIf="show==true">
+    <div class="toast-header" style="color: blueviolet;">
+      <i class="bi bi-bell"></i>
+      <strong class="me-auto"> Message </strong>
+      <button type="button" class="btn-close" (click)="closeToast()"></button>
+    </div>
+    <div class="toast-body bg-light">
+      <p class="text-danger" >Server is facing some issues. Unable to reach.</p>
+      
+    </div>
+  </div>

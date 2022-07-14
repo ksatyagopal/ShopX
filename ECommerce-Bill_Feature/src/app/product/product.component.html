@@ -1,0 +1,93 @@
+<!-- <p>product works!</p>
+
+<header>
+    <div id="navigation">
+        @{Html.RenderPartial("~/Views/Shared/userHeader.cshtml");}
+    </div>
+</header>
+
+<h1>Vegetables</h1>
+
+<title>Amazon Fresh-Vegetables</title>
+<body>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="userHome">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Fruits</li>
+        </ol>
+    </nav>
+
+    <div class="container-fluid center-content text-center">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="container-fluid">
+                    <h3>Categories of Products</h3>
+                    <div class="list-group">
+                        <h5><a asp-action="ByCategorey" asp-route-cat="vegetables" class="list-group-item">Vegetables</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="fruits" class="list-group-item">Fruits</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="dairy" class="list-group-item">Dairy and Bakery</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="snacks" class="list-group-item active">Snacks and Branded Foods</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="beverages" class="list-group-item">Beverages</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="personal" class="list-group-item">Personal Care</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="home care" class="list-group-item">Home Care</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="baby care" class="list-group-item">Baby Care</a></h5>
+                        <h5><a asp-action="ByCategorey" asp-route-cat="home and kitchen" class="list-group-item">Home and Kitchen</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="https://www.jiomart.com/images/category/220/fresh-fruits-20200704.jpg">
+                        </div>
+                    </div>
+                </div><br>
+                @if (@ViewBag.message =="added")
+                {
+
+                    <div class="alert alert-success" id="alert">
+                        <p>Product added successfully!</p>
+                    </div>
+                }@if (@ViewBag.message == "extra")
+                {
+
+                    <div class="alert alert-success" id="alert">
+                        <p>Product already exist in you cart! Quantity  increased!</p>
+                    </div>
+                }
+                @if (@ViewBag.message == "invalid")
+                {
+                    <div class="alert alert-danger" id="alert">
+                        <p>Something went wrong</p>
+                    </div>
+                }<br>
+
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-3 col-md-4 mt-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body boxed">
+                                <img src="@Html.Encode(item.Image)" width="150" height="120" style="filter:brightness(120%)">
+                            </div>
+                            <div class="panel-footer boxed">
+                                <h5 class="panel-title"><b>@item.Name</b></h5>
+                                <h6><b>Rs. @item.Price</b></h6>
+                                <div class="row justify-content-between">
+                                    <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" class="btn btn-success btn-sm ml-3"><i class="glyphicon glyphicon-shopping-cart"></i> Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                }
+
+            </div>
+        </div>
+    </div>
+</body> -->

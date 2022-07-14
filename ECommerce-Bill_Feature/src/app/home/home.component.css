@@ -1,0 +1,118 @@
+.carousel-container {
+    width: 70vw;
+    height: 80vh;
+    margin: 16px auto;
+}
+:host ::ng-deep .image-container {
+    max-width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+:host ::ng-deep .igx-carousel {
+    max-width: 100%;
+    width: unset;
+}
+:host ::ng-deep .igx-nav-dot {
+    background: black;
+    box-shadow: none;
+    width: 15px;
+    height: 15px;
+}
+:host ::ng-deep .igx-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    width: unset;
+}
+:host ::ng-deep .igx-slide img {
+    object-fit: fill;
+    max-width: 90%;
+}
+
+#BrandImage
+{
+    max-height: 60%;
+    max-width: 60%;
+    height: auto;
+    width:auto
+}
+
+#QuickSearchButton
+{
+    border: 2px solid white ;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform .2s;
+  font-family: 'PT Serif', serif;
+  
+}
+#QuickSearchButton:hover{
+    border-color: #04AA6D;
+  color: white;
+  background-color: #04AA6D;
+  transform: scale(2);
+}
+
+#Feature
+{
+    border-style: solid;
+    border-width: 3px;
+    border-color:white;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-left: 1%;
+    padding-right:1%
+}
+#card{
+    transition: transform .2s;
+}
+#card:hover{
+    transform: scale(1.3);
+}
+
+#ServiceImg
+{
+    font-size: 40px;
+    padding-left: 40%;
+    color: azure;
+}
+#ServiceText
+{
+    padding-top:5%;
+    text-align: center;
+    color:white;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+}
+#cartBtn :hover{
+    color:black
+}
+#animation{
+    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+
+}
+
+#product:hover{
+    animation: bounce 1s ;
+}
+
+@keyframes bounce {
+    20%,50%,80%,to{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-30px);
+    }
+    70%{
+        transform: translateY(-15px);
+    }
+    90%{
+        transform: translateY(-4px);
+    }
+}

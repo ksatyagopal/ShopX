@@ -1,0 +1,32 @@
+<div class="card h-100 shadow-sm">
+    <img src="../../assets/images/{{product.imageUrl}}" alt="{{product.productName}}" class="img-fluid bg-info">
+    <div class="card-body d-flex flex-column">
+        <a >
+            <h6 class="text-uppercase" style="color: blueviolet;">{{product.productName}}</h6>
+        </a>
+        <span class="mb-2">{{product.price | currency:'INR':'symbol-narrow'}}</span>
+
+        <div class="btn-group mt-auto">
+            <button type="button" class="btn btn-outline-secondary fa fa-shopping-cart mr-2"  (click)="openModal()" (click)="AddProdtoCart(product.productId) "data-toggle="modal" data-target="#exampleModalCenter"></button>
+            <button type="button" class="btn btn-outline-secondary" (click)="Viewproddetails(product.productId)" >View</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}" style="background-color:rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" ><div class="fa fa-shopping-cart mr-2"></div>Cart Status</h5>
+              </div>
+              <div class="modal-body">
+                {{datas}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="onCloseHandled()">Close</button>
+                
+              </div>
+       </div>
+        </div>
+</div>
