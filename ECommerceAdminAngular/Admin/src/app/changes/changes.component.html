@@ -1,0 +1,25 @@
+<div *ngIf="server.admin.isSuperAdmin && contributions.length>0">
+    <div>
+        <table class="table-bordered">
+            <tr>
+                <th>Date & Time</th>
+                <th>By</th>
+                <th>Changes</th>
+                <th>Reference</th>
+                <th>Reason</th>
+            </tr>
+            <tr *ngFor="let c of contributions">
+                <td>{{c.changedTime}}</td>
+                <td>{{c.changeMadeBy}}</td>
+                <td>{{c.changesMade}}</td>
+                <td>{{c.reference}}</td>
+                <td>{{c.reason}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center" style="background-color: white;" *ngIf="contributions.length==0">
+    <img src="/assets/images/searching.gif" alt="searching" style="height: 500px;" >
+</div>
+

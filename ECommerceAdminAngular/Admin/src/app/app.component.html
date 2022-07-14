@@ -1,0 +1,19 @@
+<div *ngIf="!isLogged">
+  <app-login></app-login>
+</div>
+
+<div *ngIf="isLogged">
+  <app-admin-home></app-admin-home>
+</div>
+
+
+<div class="border border-dark bg-light" style="position:fixed;right:1%;top:1%;z-index:10" *ngIf="show && response=='serverdown'">
+  <div class="toast-header" style="color: blueviolet;">
+    <i class="bi bi-bell"></i>
+    <strong class="me-auto"> Message </strong>
+    <button type="button" class="btn-close" (click)="closeToast()"></button>
+  </div>
+  <div class="toast-body">
+    <p class="text-danger">Server is facing some issues. Unable to reach.</p>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div *ngIf="table_error==false">
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:blueviolet">Customers Data <button type="button" style="margin-left: 580px;" class="btn btn-danger" (click)="btntoggle()"><i class="bi bi-table"></i></button></h1>
+    <p class="mb-4" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Details present are the registered customers, their data and current status can be tracked<br>
+        by below stats given.</p>
+    <div *ngIf="table_value">
+        <div class="card shadow mb-4" >
+            <div class="card-header py-3">
+                <h2 class="m-0 font-weight-bold" style="color:blueviolet;">Report (Active Users - {{count}})</h2>
+            </div> 
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr style="font-family:cursive;color:white;background-color:blueviolet;">
+                                <th>UserID</th>
+                                <th>FullName</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Created On</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr style="font-family:cursive;color:white;background-color:blueviolet;" align="right">
+                                <th colspan="5">Total No of Registered Customers</th>
+                                <th>{{totalusers}}</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr *ngFor="let e of users">
+                                <td>{{e.userId}}</td>
+                                <td>{{e.firstName+" "+e.lastName}}</td>
+                                <td>{{e.mailId}}</td>
+                                <td>{{e.mobile}}</td>
+                                <td>{{e.createdOn | date:'yyyy-MM-dd'}}</td>
+                                <td>{{e.createdOn | date:'HH:mm:ss'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div *ngIf="table_error">
+    <div class="card align-items-center">
+        <div class="card-title text-center">
+            <img style="width: 35%;" src="../../assets/images/nod.gif" alt="No Content">
+            <h2 class="h3 mb-2 text-gray-800" style="font-family:cursive;color:black">404! No Customers Available, Kindly check your backside connection.</h2><br>
+        </div>
+    </div>
+</div>
+
+

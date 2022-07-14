@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            border-radius: 5px;
+        }
+
+        body.thumb {
+            transform: scale(0.4);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+
+        main {
+            min-height: 80vh;
+        }
+
+        [class*='container'] {
+            border: 1px dashed #eee;
+            background-clip: content-box;
+            min-height: 100%;
+        }
+
+        .row [class*='col'] {
+            background-clip: content-box;
+        }
+
+        .nav-item {
+            background-color: #eeeeff;
+            background-clip: content-box;
+        }
+        .card-body {
+            flex: 1 1 auto;
+            
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            border: none;
+            position: relative;
+            margin-bottom: 30px;
+            box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+        }
+        .l-bg-cherry {
+            background: linear-gradient(to right, #493240, #f09) !important;
+            color: #fff;
+        }
+
+        .l-bg-blue-dark {
+            background: linear-gradient(to right, #373b44, #4286f4) !important;
+            color: #fff;
+        }
+
+        .l-bg-green-dark {
+            background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+            color: #fff;
+        }
+
+        .l-bg-orange-dark {
+            background: linear-gradient(to right, #a86008, #ffba56) !important;
+            color: #fff;
+        }
+
+        .card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
+            font-size: 110px;
+        }
+
+        .card .card-statistic-3 .card-icon {
+            text-align: center;
+            line-height: 50px;
+            margin-left: 15px;
+            color: #000;
+            position: absolute;
+            right: -5px;
+            top: 20px;
+            opacity: 0.1;
+        }
+
+        .l-bg-cyan {
+            background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+            color: #fff;
+        }
+
+        .l-bg-green {
+            background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+            color: #fff;
+        }
+
+        .l-bg-orange {
+            background: linear-gradient(to right, #f9900e, #ffba56) !important;
+            color: #fff;
+        }
+
+        .l-bg-cyan {
+            background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+            color: #fff;
+        }
+        
+    </style>
+</head>
+<body>
+<header class="py-3 mb-4 border-bottom shadow">
+    <div class="container-fluid align-items-center d-flex">
+        <div class="flex-shrink-1">
+            <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none"><i class="bi bi-person-workspace fs-1"></i> </a>
+        </div>
+        <div class="flex-grow-1 d-flex align-items-center">
+            <form class="w-100 me-3" style="margin-left:20px;">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search...">    
+            <div class="input-group-append">
+                <button class="btn btn-warning border-2" type="button" style="margin-left:-2px;z-index: 0;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            </div>
+            </form>  
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger">
+                <span *ngIf="admin==undefined"></span>
+                <span *ngIf="admin!=undefined">{{ admin.adminName }}</span>
+            </button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" (click)="showMyProfile()">My Profile</a></li>
+              <li *ngIf="isSuperAdmin==true"><a class="dropdown-item" routerLink="adminslist" (click)="close()">View Admins</a></li>
+              <li *ngIf="isSuperAdmin==true"><a class="dropdown-item" routerLink="changes" (click)="close()">Track Changes</a></li>
+              <li *ngIf="isSuperAdmin==true"><a class="dropdown-item" routerLink="register" (click)="close()">Add New Admin</a></li>
+              <li><a class="dropdown-item" (click)="editMyProfile()" >Edit Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" (click)="callLogout()">Logout</a></li>
+            </ul>
+          </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-3" style="z-index: 0;">
+        <div class="bg-light border rounded-3 p-1 h-100 sticky-top">
+        <ul style="background-color:blueviolet;" class="nav nav-pills flex-sm-column flex-row mb-auto justify-content-between">
+            <li>
+                <a routerLink="customers" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-people fs-5" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff; ">Customers</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a routerLink="orders" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-card-text fs-5" style="color: #eeeeff;"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Orders</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a routerLink="products"  (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-bricks fs-5" style="color: #eeeeff;"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Products</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a href="#" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-inboxes" style="color: #eeeeff;"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Suppliers</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a routerLink="storages" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-shop-window" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Storages</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a href="#"  (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-people-fill" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Support</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a href="#"  (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-cash-stack" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Payment Details</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a routerLink="analysis"  (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-graph-up-arrow" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Analysis</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a href="#" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-briefcase" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Delivery Partners</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <a href="#" (click)="close()" class="nav-link px-2 text-truncate"><i class="bi bi-info-circle" style="color: #eeeeff;"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">Help</span> </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+                <button class="nav-link px-2 text-truncate" (click)="callLogout()"><i class="bi bi-box-arrow-left" style="color: #eeeeff"></i>
+                    <span class="d-none d-sm-inline" style="margin-left:5px;font-weight: bold;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color: #eeeeff;">LogOut</span> 
+                </button>
+            </li>
+        </ul>
+        </div>
+    </div>
+    <div class="col-md-9" style="height:600px;overflow-y:scroll;">
+        <div class="bg-light border rounded-3 border- p-3">
+            <router-outlet></router-outlet>
+            <div class="container-fluid" *ngIf="admindashboard" style="z-index:0;">
+                <div class="d-sm-flex justify-content-center mb-4">
+                    <h1 class="h3 mb-2" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:blueviolet">Dashboard</h1>
+                </div>
+                <hr>
+                <div class="row ">
+                    <div class="col-6">
+                        <div class="card l-bg-cherry">
+                            <div class="card-statistic-3 p-4">
+                                <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="mb-2">
+                                    <h5 class="card-title mb-0" style="font-weight:bold;">New Orders</h5>
+                                </div>
+                                <div class="row d-flex">
+                                    <div class="col-12">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            {{neworders}}
+                                        </h2>
+                                    </div>
+                                    <div *ngIf="fpresentdayorders > fpreviousdayorders">
+                                        <small>{{ordermessage}}</small><span style="margin-left:14px;" ><i class="fa fa-arrow-up"></i></span>
+                                    </div>
+                                    <div *ngIf="fpresentdayorders == fpreviousdayorders">
+                                        <small>{{ordermessage}}</small><span style="margin-left:14px;" ><i class="bi bi-hourglass-split"></i></span>
+                                    </div>
+                                    <div  *ngIf="fpresentdayorders < fpreviousdayorders"> 
+                                        <small >{{ordermessage}}</small><span style="margin-left:14px;"><i class="fa-solid fa-arrow-down"></i> </span>
+                                    </div>
+                                </div>
+                                <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                    <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card l-bg-blue-dark">
+                            <div class="card-statistic-3 p-4">
+                                <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                                <div class="mb-2">
+                                    <h5 class="card-title mb-0" style="font-weight:bold;">Customers (Active)</h5>
+                                </div>
+                                <div class="row align-items-center mb-2 d-flex">
+                                    <div class="col-12">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            {{customercount}}
+                                        </h2>
+                                    </div>
+                                    <div *ngIf="newcustomers > 0">
+                                        <small>{{newcustomers}} Customers Registered today</small><span style="margin-left:14px;" > <i class="fa fa-arrow-up"></i></span>
+                                    </div>
+                                    <div  *ngIf="newcustomers == 0"> 
+                                        <small >{{newcustomers}} Customers Registered today</small><span style="margin-left:14px;"><i class="fa-solid fa-arrow-down"></i> </span>
+                                    </div>
+                                </div>
+                                <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                    <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card l-bg-green-dark">
+                            <div class="card-statistic-3 p-4">
+                                <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
+                                <div class="mb-2">
+                                    <h5 class="card-title mb-0" style="font-weight:bold;">Products</h5>
+                                </div>
+                                <div class="row align-items-center mb-2 d-flex">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            {{liveproducts}}
+                                        </h2>
+                                    </div>
+                                    <div *ngIf="newproducts > 0">
+                                        <small>{{newproducts}} listed today</small><span style="margin-left:14px;" > <i class="fa fa-arrow-up"></i></span>
+                                    </div>
+                                    <div  *ngIf="newproducts == 0"> 
+                                        <small >{{newproducts}} listed today</small><span style="margin-left:14px;"><i class="fa-solid fa-arrow-down"></i> </span>
+                                    </div>
+                                </div>
+                                <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                    <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card l-bg-orange-dark">
+                            <div class="card-statistic-3 p-4">
+                                <div class="card-icon card-icon-large"><i class="fa-solid fa-indian-rupee-sign fa-7x"></i></div>
+                                <div class="mb-2">
+                                    <h5 class="card-title mb-0" style="font-weight:bold;">Revenue (Till Date)</h5>
+                                </div>
+                                <div class="row d-flex">
+                                    <div class="col-12">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            Rs.{{revenue}}
+                                        </h2>
+                                        <div>
+                                        <div *ngIf="perdayrevenueprofit > 0">
+                                            <small>(Up for the day)</small><span style="margin-left:140px;" >{{perdayrevenueprofit | number : '1.1-1'}}% <i class="fa fa-arrow-up"></i></span>
+                                        </div>
+                                        <div  *ngIf="perdayrevenueloss > 0"> 
+                                            <small >(Down for the day)</small><span style="margin-left:140px;">{{perdayrevenueloss | number : '1.1-1'}}% <i class="fa-solid fa-arrow-down"></i> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                    <div class="progress-bar l-bg-cyan" role="progressbar" aria-valuemin="0" aria-valuemax="100" [style.width]="perdayrevenueprofit ? '70%' : (perdayrevenueloss? '2%' : null)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><app-charts></app-charts></div>
+                    
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+</div>
+<div style="position: fixed;right:2%;bottom:3%;">
+    <a (click)="showChat()"><h1><i class="bi bi-chat-right-dots-fill m-2 fs-2" style="color: blueviolet;"></i></h1></a>
+</div>
+</body>
+</html>
+
+
+<div class="border border-dark bg-light opacity-50" style="position:fixed;left:0%;top:0%;height: 100%;width: 100%;" *ngIf="showProfile || editProfile">
+</div>
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:35%;z-index:1" *ngIf="showProfile">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> My Profile </strong>
+        <button type="button" class="btn-close" (click)="closeMyProfile()"></button>
+        </div>
+        <div class="toast-body">
+        <table>
+            <tr>
+                <i class="bi bi-person-bounding-box fa-2x"></i>
+            </tr>
+            <tr>
+                <td><small style="font-size: 12px;">Admin ID</small></td>
+                <td><small style="font-size: 12px;">#{{admin.adminId}}</small></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{admin.adminName}}</td>
+            </tr>
+            <tr>
+                <td>Mail ID</td>
+                <td>{{admin.email}}</td>
+            </tr>
+            <tr>
+                <td>Mobile</td>
+                <td>{{admin.mobile}}</td>
+            </tr>
+            <tr>
+                <td>Last Logged In</td>
+                <td>{{admin.lastLoggedIn}}</td>
+            </tr>
+            <tr>
+                {{admin.contributions|json}}
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:10%;z-index:1" *ngIf="editProfile">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Edit My Profile </strong>
+        <button type="button" class="btn-close" (click)="closeMyProfile()"></button>
+        </div>
+        <div class="toast-body">
+        <table>
+            <tr>
+                <td><small style="font-size: 12px;">{{admin.adminName}}</small></td>
+            </tr>
+        </table>
+        <div>
+            <form class="form" #editForm="ngForm">
+                <small style="color: blueviolet;">#{{admin.adminId}} </small><br>
+                <label for="mail">Name:</label>
+                <input class="form-control" [(ngModel)]="admin.adminName" [ngModelOptions]="{standalone: true}">
+                <label for="mail">Mail ID:</label>
+                <input class="form-control" type="email" name="" id="mail" [(ngModel)]="admin.email" [ngModelOptions]="{standalone: true}">
+                <label for="mobile">Mobile:</label>
+                <input class="form-control" type="tel" id="mobile" [(ngModel)]="admin.mobile" [ngModelOptions]="{standalone: true}">
+                <button class="btn" type="button" style="background-color: blueviolet;color:white;" (click)="saveMyProfile()">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;right:2%;bottom:2%;z-index:1" *ngIf="showChatWindow">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Chats <small *ngIf="newMessages.length>0" class="text-success">{{newMessages.length}} New Message(s)</small> </strong>
+        <button type="button" class="btn-close" (click)="closeMyProfile()"></button>
+        </div>
+        <div class="toast-body">
+            <div class="m-1">
+                <small>Select</small>
+                <select #selectAdmin="ngModel" class="form-select" [(ngModel)]="selectedAdminForChat" required>
+                    <option [attr.value]="" selected disabled>--select--</option>
+                    <option *ngFor="let a of allAdmins" [attr.value]="a.adminId">{{a.adminName}}</option>  
+                </select>
+            </div>
+            
+            <div class="border border-dark m-1" style="width:240px;">
+                <div *ngIf="selectedAdminForChat!=undefined" style="overflow-y: scroll;height:250px">
+                    <div *ngFor="let m of allMessages">
+                        <div class="m-1 p-1" style="background-color: gray;color: white;width: 170px;word-wrap: break-word;" *ngIf="m.messageFrom.toString()==selectedAdminForChat">{{m.message}}</div>
+                        <small style="font-size: 8px;margin: 1px;" *ngIf="m.messageFrom.toString()==selectedAdminForChat">{{m.sentTime|date:'mediumDate'}} {{m.sentTime|date:'shortTime'}}</small>
+                        <div class="d-flex justify-content-end"><div class="m-1 p-1" style="background-color: blueviolet;color:white;width: 170px;word-wrap: break-word;" *ngIf="m.messageTo.toString()==selectedAdminForChat && m.messageFrom.toString()==adminid">{{m.message}}</div></div> 
+                        <div class="d-flex justify-content-end"><small style="font-size: 8px;" *ngIf="m.messageTo.toString()==selectedAdminForChat && m.messageFrom.toString()==adminid">{{m.sentTime|date:'mediumDate'}} {{m.sentTime|date:'shortTime'}}</small></div>
+                    </div>
+                </div>
+                <div *ngIf="selectedAdminForChat==undefined" class="d-flex justify-content-center">
+                    <p style="opacity: 0.5;">No Messages</p>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between m-1">
+                <textarea #msg="ngModel" class="form-control" id="resize" style="word-wrap: break-word;overflow-y:auto;" [(ngModel)]="adminMessage" rows="2" placeholder="Start typing..." required></textarea>
+                <button style="background-color: blueviolet;" class="btn" [disabled]="selectAdmin.untouched || selectAdmin.invalid || msg.invalid"><i class="bi bi-send-fill" style="color: white;" (click)="sendNewMessage()"></i></button>
+            </div>
+        </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="row" *ngIf="server.admin.isSuperAdmin && admins.length>0">
+    <div class="col-xl-6 mb-4" *ngFor="let admin of admins">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="fs-1"><i class="bi bi-person-circle"></i></p>
+                        <div class="ms-3">
+                            <p class="fw-bold mb-1" style="color: blueviolet;">{{admin.adminName}}</p>
+                            <p class="text-muted mb-0">{{admin.email}}</p>
+                            <small style="font-size: 10px;color: blueviolet;">#{{admin.adminId}}</small>
+                        </div>
+                    </div>
+                    <span class="badge rounded-pill bg-secondary" *ngIf="admin.isSuperAdmin">Super</span>
+                    <span class="badge rounded-pill locked" *ngIf="admin.isLocked">Locked</span>
+                    <span class="badge rounded-pill active" *ngIf="admin.isLoggedIn">Active</span>
+                    <span class="badge rounded-pill deleted" *ngIf="admin.isDeleted">Deleted</span>
+                    <span class="badge rounded-pill offline"
+                        *ngIf="!admin.isDeleted && !admin.isLocked && !admin.isLoggedIn">Offline</span>
+                </div>
+            </div>
+            <div class="card-footer border-0 bg-light p-2 d-flex justify-content-around" style="color: blueviolet;">
+                <a class="btn m-0 text-reset" role="button" data-ripple-color="primary" (click)="showAdminDetails(admin)">View<i
+                        class="bi bi-view-list m-1"></i></a>
+                <a class="btn m-0 text-reset" role="button" data-ripple-color="primary" (click)="editAdminDetails(admin)">Edit<i
+                        class="bi bi-pen m-1"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center" style="background-color: white;" *ngIf="admins.length==0">
+    <img src="/assets/images/searching.gif" alt="searching" style="height: 500px;" >
+</div>
+
+
+<div class="border border-dark bg-light opacity-50" style="position:fixed;left:0%;top:0%;height: 100%;width: 100%;" *ngIf="showAdmin || editAdmin">
+</div>
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:35%;z-index:1" *ngIf="showAdmin">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Profile </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+        <table>
+            <tr>
+                <i class="bi bi-person-bounding-box fa-2x"></i>
+            </tr>
+            <tr>
+                <td><small style="font-size: 12px;">Admin ID</small></td>
+                <td><small style="font-size: 12px;">#{{selectedAdmin.adminId}}</small></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{selectedAdmin.adminName}}</td>
+            </tr>
+            <tr>
+                <td>Mail ID</td>
+                <td>{{selectedAdmin.email}}</td>
+            </tr>
+            <tr>
+                <td>Mobile</td>
+                <td>{{selectedAdmin.mobile}}</td>
+            </tr>
+            <tr>
+                <td>Last Logged In</td>
+                <td>{{selectedAdmin.lastLoggedIn}}</td>
+            </tr>
+            <tr>
+                {{selectedAdmin.contributions|json}}
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:10%;z-index:1" *ngIf="editAdmin">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Edit Admin </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+        <table>
+            <tr>
+                <td><small style="font-size: 12px;">{{selectedAdmin.adminName}} (#{{selectedAdmin.adminId}})</small></td>
+            </tr>
+        </table>
+        <div>
+            <form class="form" #editForm="ngForm">
+                <label for="mail">MailID:</label>
+                <input class="form-control" type="email" name="" id="mail" [(ngModel)]="selectedAdmin.email" [ngModelOptions]="{standalone: true}">
+                <label for="mobile">Mobile:</label>
+                <input class="form-control" type="tel" id="mobile" [(ngModel)]="selectedAdmin.mobile" [ngModelOptions]="{standalone: true}">
+                <label for="super">Is Super Admin: &nbsp;</label>
+                <input type="checkbox" id="super" [(ngModel)]="selectedAdmin.isSuperAdmin" [ngModelOptions]="{standalone: true}"/><br/>
+                <label for="lock">Is Locked: &nbsp;</label>
+                <input type="checkbox" id="lock" [(ngModel)]="selectedAdmin.isLocked" [ngModelOptions]="{standalone: true}"/><br/>
+                <label for="del">Is Deleted: &nbsp;</label>
+                <input type="checkbox" id="del" [(ngModel)]="selectedAdmin.isDeleted" [ngModelOptions]="{standalone: true}"/><br/>
+                <label for="">Reason:</label>
+                <textarea class="form-control" name="" id="" #res="ngModel" cols="30" rows="2" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" required></textarea>
+                <span class="text-danger" *ngIf="res.touched && res.invalid"><small>Reason required.</small></span><br/>
+                <button class="btn" type="button" style="background-color: blueviolet;color:white;" [disabled]="res.invalid" (click)="changeAdminDetails()">Save</button>
+            </form>
+        </div>
+    </div>
+</div>

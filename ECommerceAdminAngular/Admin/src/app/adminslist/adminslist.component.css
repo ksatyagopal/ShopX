@@ -1,0 +1,19 @@
+.deleted{
+    background-color: rgb(250, 227, 227);
+    color: rgb(176, 50, 50);
+}
+
+.locked{
+    background-color: rgb(247, 231, 203);
+    color: rgb(241, 145, 27);
+}
+
+.active{
+    background-color: rgb(217, 251, 217);
+    color: rgb(27, 111, 27);
+}
+
+.offline{
+    background-color: rgb(228, 228, 255);
+    color: rgb(64, 64, 202);
+}

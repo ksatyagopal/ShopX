@@ -1,0 +1,184 @@
+
+<div class="container-fluid text-center">
+    <h1 class="h3 mb-2 text-gray-800" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:blueviolet">Active Products</h1><br>
+    <div *ngIf="producttable">
+              <div class="form">
+                <i class="bi bi-search"></i>
+                <input type="search" [disabled]="inactiveproducts" placeholder="Enter Product Name" [(ngModel)]="searchKey" (keyup)="search()" class="form-control form-input" placeholder="Search for product..."><br>
+                <span class="left-pan"><i class="bi bi-mic-fill"></i></span>
+              </div>  
+              <div class="row">
+                    <div class="col-6">
+                        <label for="range" style="color:blueviolet;font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight:200;font-size:20px;">Filter by price:</label>
+                        <input type="range" [disabled]="inactiveproducts" id="range" step="100" min="10" max="3000" [(ngModel)]="value" value="" (change)="price()" onchange="rangePrimary.value=value" style="margin-left:5px;"><input type="text" id="rangePrimary" [disabled]="inactiveproducts" value="Rs. 0" style="margin-left:9px;width:12%;border-radius: 5px;" />
+                    </div>
+                    <div class="col-3">
+                        <label class="switch">
+                            <input class="switch-input" [disabled]="inactiveproducts" type="checkbox" (change)="sort()" [(ngModel)]="ischecked" />
+                            <span class="switch-label" data-on="Clothing" data-off="Others"></span> 
+                            <span class="switch-handle"></span> 
+                           </label>
+                    </div>
+                    <div class="col-3">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                More Options
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><button class="dropdown-item" (click)="addtoast()">Add Product</button></li>
+                              <li><button class="dropdown-item" (click)="showinactiveproducts()">Inactive Products</button></li>
+                              <li><button class="dropdown-item"  (click)="showactiveproducts()">Active Products</button></li>
+                            </ul>
+                          </div>
+                    </div>
+              </div><br>
+        <div *ngIf="activeproducts" class="row">
+            <div *ngFor="let p of products" class="card col-3" size="12rem" style="border-right-color: blueviolet; border-right-width: 3px; border-left-color: blueviolet; border-left-width: 3px; padding:10px;margin-left:60px;margin-bottom: 15px;">
+                    <div class="card-title text-center">
+                        <h1 style="color:black ;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:bold;">{{p.productName}}</h1>
+                    </div>
+                    <div class="card-body">
+                        <img src="../../assets/images/{{p.imageUrl}}" class="card-img-top img-fluid"/>
+                        <div class="row no-gutters text-center">
+                            <h4 style="font-family:cursive;font-weight:bold;">{{p.category}}</h4>
+                            <div id="t1">M.R.P.: <img src="../../assets/images/rupee.png" height="15" width="12" alt="Logo" />{{p.price}}</div>
+                            <button class="btn btn-warning" type="button" style="width:75%;margin-left: 22px;" (click)="showdetails(p)">
+                                Edit Product <i class="bi bi-wrench-adjustable"></i>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="producttable==false">
+        <div class="card">
+            <div class="card-title">
+                <img style="width: 35%;" src="../../assets/images/No data.gif" alt="No Content">
+                <h2 class="h3 mb-2 text-gray-800" style="font-family:cursive;color:black">404! No Products Available, Kindly check your backside connection.</h2><br>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="inactiveproducts" class="row">
+    <div *ngFor="let p of notactiveproducts" class="card col-3" size="12rem" style="border-right-color: blueviolet; border-right-width: 3px; border-left-color: blueviolet; border-left-width: 3px; padding:10px;margin-left:60px;margin-bottom: 15px;">
+            <div class="card-title text-center">
+                <h1 style="color:black ;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:bold;">{{p.productName}}</h1>
+            </div>
+            <div class="card-body">
+                <img src="../../assets/images/{{p.imageUrl}}" class="card-img-top img-fluid"/>
+                <div class="row no-gutters text-center">
+                    <h4 style="font-family:cursive;font-weight:bold;">{{p.category}}</h4>
+                    <div id="t1">M.R.P.: <img src="../../assets/images/rupee.png" height="15" width="12" alt="Logo" />{{p.price}}</div>
+                    <button class="btn btn-warning" type="button" style="width:75%;margin-left: 22px;" (click)="showdetails(p)">
+                        Edit Product <i class="bi bi-wrench-adjustable"></i>
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:2%;z-index:1" *ngIf="editProducts">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Edit ProductDetails </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+            <small style="font-size: 12px;">#{{selectedproduct.productId}}</small>
+       
+        <div style="margin:2px;height:450px;overflow-y: scroll;">
+            <form class="form" #editproductForm="ngForm" (ngSubmit)="updateproductdetails()">
+                <label for="productname">ProductName:</label>
+                <input class="form-control" type="text" name="" id="productname" [(ngModel)]="selectedproduct.productName" [ngModelOptions]="{standalone: true}"><br><br>
+                <img id="currentimage" src="../../assets/images/{{selectedproduct.imageUrl}}" style="width: 100%;height: 15vw;object-fit: cover;margin-top: -30px;" />
+                <label for="productimage">Update ProductImage:</label>
+                <input class="form-control" type="file" id="productimage" (change)="getimagename()" [(ngModel)]="imagename" [ngModelOptions]="{standalone: true}">
+                <label for="productprice">Price:</label>
+                <input class="form-control" type="number" id="productprice" [(ngModel)]="selectedproduct.price" [ngModelOptions]="{standalone: true}">
+                <label for="active">Is Active: &nbsp;</label>
+                <input class="form-control" type="text" id="active" [(ngModel)]="selectedproduct.active" [ngModelOptions]="{standalone: true}"/><br>
+                <label for="Description">Product Description: &nbsp;</label>
+                <input class="form-control" type="text" id="Description" [(ngModel)]="selectedproduct.pdescription" [ngModelOptions]="{standalone: true}"/><br>
+                <label for="category">Category: &nbsp;</label>
+                <input class="form-control" type="text" id="category" [(ngModel)]="selectedproduct.category" [ngModelOptions]="{standalone: true}" /><br>
+                    <input class="btn" type="submit"  Value="Save" style="background-color: blueviolet;color:white;margin-left:100px;"/>
+                    <button class="btn btn-danger" (click)="deleteproduct()" style="margin-left:50px;">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:2%;z-index:1" *ngIf="addproducts">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Add New Product </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body">
+        <div style="margin:2px;height:450px;overflow-y: scroll;">
+            <form  #addproductForm="ngForm" (ngSubmit)="addnewproduct()">
+                <label for="productname">ProductName:</label>
+                <input class="form-control" type="text" name="productName" id="productname" [(ngModel)]="newproduct.productName" required minlength="3" #productname="ngModel">
+                <div *ngIf="productname.invalid && (productname.dirty || productname.touched)" class="text-danger">
+                    <span *ngIf="productname.errors?.['required']">
+                        *Product Name required.
+                    </span>
+                    <span *ngIf="productname.errors?.['minlength']">
+                        *Product Name must be at least 3 characters long.
+                    </span>
+                </div>
+                <label for="productimage">ProductImage:</label>
+                <input class="form-control" type="file" id="productimage" name="imageUrl" (change)="getimagename()" [(ngModel)]="imagename" required  #productimage="ngModel">
+                <div *ngIf="productimage.invalid && (productimage.dirty || productimage.touched)" class="text-danger">
+                    <span *ngIf="productimage.errors?.['required']">
+                        *Product Image required.
+                    </span>
+                </div>
+                <label for="productprice">Price:</label>
+                <input class="form-control" type="number" id="productprice" name="price" [(ngModel)]="newproduct.price" required  #productprice="ngModel"><br>
+                <div *ngIf="productprice.invalid && (productprice.dirty || productprice.touched)" class="text-danger">
+                    <span *ngIf="productprice.errors?.['required']">
+                        *Product Price required.
+                    </span>
+                </div>
+                <label for="active">Is Active (Yes/No): &nbsp;</label>
+                <input class="form-control" type="text" id="active" name="active" [(ngModel)]="newproduct.active" required maxlength="3" pattern="[A-Za-z]{0,3}" #active="ngModel"/>
+                <div *ngIf="active.invalid && (active.dirty || active.touched)" class=" text-danger">
+                    <span *ngIf="active.errors?.['required']">
+                        *Active Field is required.
+                    </span>
+                    <span *ngIf="active.errors?.['pattern']">
+                        *Field should only have alphabets.
+                    </span>
+                </div><br>
+                <label for="Description">Product Description: &nbsp;</label>
+                <input class="form-control" type="text" id="Description" name="pdescription" [(ngModel)]="newproduct.pdescription" required minlength="5" pattern="[A-Za-z0-9 ]{0,100}" #pdescription="ngModel" />
+                <div *ngIf="pdescription.invalid && (pdescription.dirty || pdescription.touched)" class=" text-danger">
+                    <div *ngIf="pdescription.errors?.['required']">
+                        *Description is required.
+                    </div>
+                    <div *ngIf="pdescription.errors?.['minlength']">
+                        *Description must be atleast 5 characters long.
+                    </div>
+                    <div *ngIf="pdescription.errors?.['pattern']">
+                        *Special characters not allowed.
+                    </div>
+                </div><br>
+                <label for="category">Category: &nbsp;</label>
+                <input class="form-control" type="text" id="category" name="category" [(ngModel)]="newproduct.category" required minlength="3" pattern="[A-Za-z0-9]{0,100}" #category="ngModel" />
+                <div *ngIf="category.invalid && (category.dirty || category.touched)" class="text-danger">
+                <div *ngIf="category.errors?.['required']">
+                    *Category is required.
+                </div>
+                <div *ngIf="category.errors?.['minlength']">
+                    *Category must be atleast 3 characters long.
+                </div>
+                <div *ngIf="category.errors?.['pattern']">
+                    *Special characters not allowed.
+                </div>
+                </div><br>
+                <div class="text-center">
+                    <input class="btn" type="submit" [disabled]="addproductForm.invalid" Value="Add Product" style="background-color: blueviolet;color:white;"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

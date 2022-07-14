@@ -1,0 +1,89 @@
+<head>
+<style>
+.card-header{
+    padding: 2px;
+    width:100%;
+    border-radius: 7px;
+}
+</style>
+</head>
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:blueviolet">Storage Data <i style="margin-left:10px;" class="bi bi-boxes"></i></h1>
+    <p class="mb-4" style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Products and their quantities are segregated based on their respective storages, Kindly select one to see details.<br>
+        by below stats given.</p>
+<select class="form-select" [(ngModel)]="selectedname" (ngModelChange)="getproductfromstorage()">
+    <option *ngFor="let item of uniquestoragename" [value]="item.storageName">
+      {{item.storageName}}
+    </option>
+</select><br><br>
+<div *ngIf="storagenameselected" class="row">
+            <div class="card shadow mb-4" >
+                <div class="card-header py-3">
+                    <h2 class="m-0 font-weight-bold" style="color:blueviolet;">Data Report</h2>
+                </div> 
+            <div class="card col-12" size="12rem">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="th-sm">StorageName</th>
+                                    <th class="th-sm">ProductID</th>
+                                    <th class="th-sm">InStock</th>
+                                    <th class="th-sm">More Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" *ngFor="let p of bystoragename">
+                                    <td>
+                                        <input class="text-center" type="text"  value="{{p.storageName}}">   
+                                    </td>
+                                    <td>
+                                        <input class="text-center" type="text"  value="{{p.productId}}">  
+                                    </td>
+                                    <td>
+                                        <input class="text-center" type="text"  value="{{p.quantity}} Items Available">  
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning" (click)="showmoredetails(p)">Show More</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:2%;z-index:1" *ngIf="StorageInfo">
+    <div class="toast-header opacity-100" style="color: blueviolet;">
+        <strong class="me-auto"> Edit Storage </strong>
+        <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="toast-body" style="height:500px;overflow-y:scroll;">
+            <small style="font-size: 12px;">#{{loopingstorage.storageId}}</small>
+       
+        <div>
+            <form class="form" #editproductForm="ngForm" (ngSubmit)="updatestoragedetails(loopingstorage.storageId)">
+                <label for="productname">ProductName:</label>
+                <input class="form-control" type="text" id="productname" [(ngModel)]="loopingstorage.productName" [ngModelOptions]="{standalone: true}" readonly>
+                <label for="productimage">ProductImage:</label><br>
+                <img id="productimage" src="../../assets/images/{{loopingstorage.productimage}}" style="width: 50%;height: 15vw;object-fit: cover;" aria-readonly="true"/><br><br>
+                <label for="supplier">Supplier: &nbsp;</label>
+                <input type="text" id="supplier" [(ngModel)]="loopingstorage.supplierName" [ngModelOptions]="{standalone: true}" readonly/><br>
+                <label for="updatesupplier">Update Supplier: &nbsp;</label>
+                <select class="form-control" [value]="updatedsuppliername" (input)="updatedsuppliername = ($any($event.target).value)" >
+                    <option *ngFor="let item of listbysuppliername" [value]="item.supplierName">
+                      {{item.supplierName}}
+                    </option>
+                </select>
+                <label for="stock">In Stock:</label>
+                <input class="form-control" type="number" id="stock" [(ngModel)]="loopingstorage.quantity" [ngModelOptions]="{standalone: true}"><br>
+                    <input class="btn" type="submit"  Value="Save" style="background-color: blueviolet;color:white;margin-left:50px;"/>
+                    <button class="btn btn-danger" (click)="deletestorage(loopingstorage.storageId)" style="margin-left:20px;">Remove</button>
+            </form>
+        </div>
+    </div>
+</div>
+    

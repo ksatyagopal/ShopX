@@ -1,0 +1,139 @@
+<head>
+</head>
+
+<body>
+  <div class="container-fluid" style="padding: 10px;">
+    <h1 class="h3 mb-2 text-gray-800"
+      style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:blueviolet">
+      Orders Stats</h1>
+    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" >
+      <thead>
+        <tr>
+          <th class="th-sm">OrderID</th>
+          <th class="th-sm">UserID</th>
+          <th class="th-sm">Payment Type</th>
+          <th class="th-sm">TotalAmount</th>
+          <th class="th-sm">Ordered On</th>
+          <th class="th-sm">Order Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of allOrders" >
+          <td>{{order.orderId}}</td>
+          <td>{{order.userId}}</td>
+          <td>{{order.paymentType}}</td>
+          <td>{{order.totalAmount}}</td>
+          <td>{{order.orderedOn|date}} {{order.orderedOn|date:'shortTime'}}</td>
+          <td>{{order.orderStatus}}</td>
+          <td>
+            <button class="btn btn-info m-1" (click)="showOrderDetails(order)">Show</button>
+            <button class="btn btn-warning" (click)="showEditOrder(order)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="th-sm">OrderID</th>
+          <th class="th-sm">UserID</th>
+          <th class="th-sm">Payment Type</th>
+          <th class="th-sm">TotalAmount</th>
+          <th class="th-sm">Ordered On</th>
+          <th class="th-sm">Order Status</th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</body>
+
+
+<div class="border border-dark bg-light opacity-50" style="position:fixed;left:0%;top:0%;height: 100%;width: 100%;" *ngIf="showOrder || editOrder">
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:2%;top:2%;z-index:1" *ngIf="showOrder">
+  <div class="toast-header opacity-100" style="color: blueviolet;">
+    <strong class="me-auto"> Order Details </strong>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="toast-body p-2">
+      <div class="d-flex justify-content-between">
+        <div>
+          <div class="bg-light m-1 border border-dark rounded p-2">
+            <p class="fs-3">{{order.user.firstName+" "+order.user.lastName}}</p>
+            <small style="color: blueviolet;">#{{order.user.userId}}</small>
+            <p>{{order.user.mailId}}</p>
+            <p>{{order.user.mobile}}</p>
+          </div>
+          <div class="bg-light m-1 border border-dark rounded p-2">
+            <p class="fs-3">Delivery Address</p>
+            <table>
+              <tr><td>Address ID:</td><td><small style="color: blueviolet;">#{{order.deliveryAddressNavigation.id}}</small></td></tr>
+              <tr><td>Address Line1:</td><td><small>{{order.deliveryAddressNavigation.addressLine1}}                     </small></td></tr>
+              <tr><td>Address Line2:</td><td><small>{{order.deliveryAddressNavigation.addressLine2}}                     </small></td></tr>
+              <tr><td>City:</td><td><small>{{order.deliveryAddressNavigation.city}}                             </small></td></tr>
+              <tr><td>Postal Code:</td><td><small>{{order.deliveryAddressNavigation.postalCode}}                       </small></td></tr>
+              <tr><td>Country:</td><td><small>{{order.deliveryAddressNavigation.country}}                          </small></td></tr>
+              <tr><td>Mail ID:</td><td><small>{{order.deliveryAddressNavigation.mailId}}                           </small></td></tr>
+              <tr><td>Mobile:</td><td><small>{{order.deliveryAddressNavigation.mobile}}                           </small></td></tr>
+              <tr><td>Contact Person:</td><td><small>{{order.deliveryAddressNavigation.contactPerson}}                    </small></td></tr>
+          </table>
+          </div>
+        </div>
+        <div class="bg-light m-1 border border-dark rounded p-2" style="height:475px;border-width: 1px;border: black;">
+          <p class="fs-3">Order Items [Order ID: <small style="color: blueviolet;">#{{order.orderId}}</small> ]</p>
+          <div class="border border-dark rounded p-1" style="height:400px;overflow-y: scroll;">
+            <table class="table table-striped-columns">
+              <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>SubTotal</th>
+                <th>Is Returned</th>
+              </tr>
+              <tr rowspacing="1" *ngFor="let item of order.orderItems" >
+                <td>{{item.productId}}</td>
+                <td>{{item.productName}}</td>
+                <td><img style="height: 100px;" src="../../assets/images/{{item.product.imageUrl}}" alt=""></td>
+                <td>{{item.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.subTotal}}</td>
+                <td>{{item.isReturned}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="border border-dark rounded p-1 m-1" style="width: 250px;">
+          Order Id: <br>
+          #{{order.orderId}} <br>
+          User ID: <br>
+          #{{order.userId}} <br>
+          
+          Total Amount: <br>
+          {{order.totalAmount}} <br>
+          Payment Type: <br>
+          {{order.paymentType}} <br>
+          Payment ID: <br>
+          #{{order.paymentId}} <br>
+          Offer ID: <br>
+          #{{order.offerId}} <br>
+          Ordered On: <br>
+          {{order.orderedOn|date}} <br>
+          Order Status: <br>
+          <small style="background-color: blueviolet;color:white;padding:5px">{{order.orderStatus}}</small> <br>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="border border-dark bg-light shadow box-shadow" style="position:fixed;left:40%;top:10%;z-index:1" *ngIf="editOrder">
+  <div class="toast-header opacity-100" style="color: blueviolet;">
+    <strong class="me-auto"> Edit Order Details </strong>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="toast-body">
+      
+  </div>
+</div>
