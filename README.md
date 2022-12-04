@@ -10,6 +10,7 @@ This is a group Project.
 >  4. [Keerthana-Ramesh214](https://github.com/Keerthana-Ramesh214)
 >  5. [GuhankarthickC](https://github.com/GuhankarthickC)
 >  6. [Ebenezer.R](https://github.com/EBE0028)
+>  7. [Satyagopal Kothuru](https://github.com/ksatyagopal)
 
 ## Angular:
 * ECommerce-Bill_Feature (For End User)
